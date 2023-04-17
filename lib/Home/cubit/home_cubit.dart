@@ -11,6 +11,7 @@ class HomeCubit extends Cubit<HomeState> {
   UserModel? userModel;
 
   Future<void> getUser() async {
+    userModelList = [];
     emit(LodinGetUsersState());
     await DioHelper.getData(url: GETALLUSER).then((value) {
       print('jabhom');
@@ -49,7 +50,7 @@ class HomeCubit extends Cubit<HomeState> {
       url: DELETEUSER + id.toString(),
     ).then((value) {
       print('na7a');
-      userModelList = [];
+
       getUser();
       emit(DeleteUserStateGood());
     }).catchError((e) {
@@ -81,7 +82,8 @@ class HomeCubit extends Cubit<HomeState> {
         url: GETUSERDETAIL + id.toString(),
         data: {'email': email, 'name': name}).then((value) {
       print('badalt info user');
-      // userModel = UserModel.fromJson(value.data);
+      userModel = UserModel.fromJson(value.data);
+      getUser();
       emit(UpdateUserStateGood());
     }).catchError((e) {
       print(e.toString());

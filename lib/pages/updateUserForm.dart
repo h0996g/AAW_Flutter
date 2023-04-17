@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_aaw/models/userModel.dart';
+import 'package:flutter_aaw/pages/userDetail.dart';
 import 'package:flutter_aaw/shared/components/components.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -43,6 +44,12 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
         // TODO: implement listener
+        if (state is UpdateUserStateGood) {
+          showToast(msg: 'Success', state: ToastStates.success);
+          navigatAndFinish(
+              context: context,
+              page: UserDetail(model: HomeCubit.get(context).userModel!));
+        }
       },
       builder: (context, state) {
         return Scaffold(

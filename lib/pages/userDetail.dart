@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_aaw/models/userModel.dart';
 import 'package:flutter_aaw/pages/updateUserForm.dart';
+import 'package:flutter_aaw/pages/users.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../Home/cubit/home_cubit.dart';
@@ -23,7 +24,8 @@ class UserDetail extends StatelessWidget {
                 title: const Text('Profile'),
                 canreturn: true,
                 onPressed: () {
-                  Navigator.pop(context);
+                  // Navigator.pop(context);
+                  navigatAndFinish(context: context, page: Users());
                 }),
             body: SingleChildScrollView(
               child: Center(
