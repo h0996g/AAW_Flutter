@@ -33,3 +33,23 @@ class DeleteUserStateBad extends HomeState {
 
   DeleteUserStateBad(this.err);
 }
+
+class LodinGetUserDetailState extends HomeState {}
+
+class GetUserDetailStateGood extends HomeState {}
+
+class GetUserDetailStateBad extends HomeState {
+  final err;
+
+  GetUserDetailStateBad(this.err);
+}
+
+class LodinUpdateUserState extends HomeState {}
+
+class UpdateUserStateGood extends HomeState {}
+
+class UpdateUserStateBad extends HomeState {
+  final err;
+
+  UpdateUserStateBad(this.err);
+}

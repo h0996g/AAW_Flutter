@@ -1,11 +1,12 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_aaw/Home/addUser.dart';
 import 'package:flutter_aaw/models/userModel.dart';
+import 'package:flutter_aaw/pages/userDetail.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../Home/cubit/home_cubit.dart';
 import '../shared/components/components.dart';
-import 'cubit/home_cubit.dart';
+import 'addUser.dart';
 
 class Users extends StatelessWidget {
   @override
@@ -63,7 +64,11 @@ Widget defaultTask(context, UserModel model, int id) => Card(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       child: ListTile(
         onTap: () {
-          // navigatAndReturn(context: context, page: TaskDetails());
+          navigatAndReturn(
+              context: context,
+              page: UserDetail(
+                model: model,
+              ));
         },
         onLongPress: () {
           showDialog(

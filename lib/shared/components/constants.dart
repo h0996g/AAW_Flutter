@@ -6,3 +6,5 @@ const GETALLUSER = '/users';
 
 const CREATEUSER = '/users';
 const DELETEUSER = '/users/';
+const GETUSERDETAIL = '/users/';
+const UPDATEUSER = '/users/';

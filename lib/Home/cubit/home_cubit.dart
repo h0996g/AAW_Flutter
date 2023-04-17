@@ -57,4 +57,35 @@ class HomeCubit extends Cubit<HomeState> {
       emit(DeleteUserStateBad(e.toString()));
     });
   }
+
+  void getUserDetail({required String id}) {
+    emit(LodinGetUserDetailState());
+
+    DioHelper.postData(
+      url: GETUSERDETAIL + id.toString(),
+    ).then((value) {
+      print('dkhol l detail');
+      userModel = UserModel.fromJson(value.data);
+      emit(GetUserDetailStateGood());
+    }).catchError((e) {
+      print(e.toString());
+      emit(GetUserDetailStateBad(e.toString()));
+    });
+  }
+
+  void updateUser(
+      {required String id, required String name, required String email}) {
+    emit(LodinUpdateUserState());
+
+    DioHelper.putData(
+        url: GETUSERDETAIL + id.toString(),
+        data: {'email': email, 'name': name}).then((value) {
+      print('badalt info user');
+      // userModel = UserModel.fromJson(value.data);
+      emit(UpdateUserStateGood());
+    }).catchError((e) {
+      print(e.toString());
+      emit(UpdateUserStateBad(e.toString()));
+    });
+  }
 }

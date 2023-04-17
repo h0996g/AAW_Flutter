@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_aaw/Home/cubit/home_cubit.dart';
-import 'package:flutter_aaw/Home/users.dart';
+import 'package:flutter_aaw/pages/users.dart';
 import 'package:flutter_aaw/shared/blocObserver/observer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'Home/addUser.dart';
 import 'dio/dioHalper.dart';
 
 void main() {
