@@ -2,10 +2,12 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_aaw/pages/users.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../../../shared/components/components.dart';
 import '../../../shared/components/constants.dart';
 import '../../../shared/helper/cashHelper.dart';
+import '../../Home.dart';
 import 'cubit/register_cubit.dart';
 
 class Register extends StatelessWidget {
@@ -158,9 +160,12 @@ class Register extends StatelessWidget {
         if (state is RegisterUserStateGood) {
           showToast(msg: "Succesffuly", state: ToastStates.success);
           // sleep(const Duration(seconds: 1));
-          CachHelper.putcache(key: 'token', value: state.token).then((value) {
-            TOKEN = CachHelper.getData(key: 'token');
-            navigatAndFinish(context: context, page: Users());
+          CachHelper.putcache(key: 'token', value: state.token)
+              .then((value) async {
+            TOKEN = await CachHelper.getData(key: 'token');
+            DECODEDTOKEN = JwtDecoder.decode(state.token);
+
+            navigatAndFinish(context: context, page: const Home());
           });
         } else if (state is RegisterUserStateBad) {
           showToast(msg: state.err, state: ToastStates.error);

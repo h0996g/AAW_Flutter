@@ -1,8 +1,8 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_aaw/models/userModel.dart';
-import 'package:flutter_aaw/pages/updateUserForm.dart';
-import 'package:flutter_aaw/pages/users.dart';
+import 'package:flutter_aaw/pages/chatDetails.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../Home/cubit/home_cubit.dart';
@@ -50,7 +50,7 @@ class UserDetail extends StatelessWidget {
                           height: 20,
                         ),
                         Text(
-                          HomeCubit.get(context).userModel!.name!,
+                          HomeCubit.get(context).otherUserModel!.name!,
                           style: const TextStyle(
                               fontSize: 30, fontWeight: FontWeight.w400),
                         ),
@@ -58,7 +58,7 @@ class UserDetail extends StatelessWidget {
                           height: 5,
                         ),
                         Text(
-                          HomeCubit.get(context).userModel!.email!,
+                          HomeCubit.get(context).otherUserModel!.email!,
                           style: const TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w200),
                         ),
@@ -66,13 +66,19 @@ class UserDetail extends StatelessWidget {
                           height: size.height * 0.1,
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          padding: EdgeInsets.symmetric(horizontal: 20),
                           child: defaultSubmit2(
-                              text: 'Edite',
+                              text: 'Send Message',
                               background: Colors.grey,
                               onPressed: () {
                                 navigatAndReturn(
-                                    context: context, page: UpdateUserForm());
+                                    context: context,
+                                    page: ChatDetails(
+                                      model:
+                                          HomeCubit.get(context).otherUserModel,
+                                    ));
+                                // navigatAndReturn(
+                                //     context: context, page: UpdateUserForm());
                               }),
                         )
                       ],

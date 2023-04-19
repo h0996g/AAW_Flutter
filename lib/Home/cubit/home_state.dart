@@ -4,6 +4,8 @@ abstract class HomeState {}
 
 class HomeInitial extends HomeState {}
 
+class ChangeButtonNavStateGood extends HomeState {}
+
 class LodinAddUserState extends HomeState {}
 
 class AddUserStateGood extends HomeState {}
@@ -53,3 +55,21 @@ class UpdateUserStateBad extends HomeState {
 
   UpdateUserStateBad(this.err);
 }
+
+class SendMessageDataStateGood extends HomeState {}
+
+class SendMessageDataStateBad extends HomeState {
+  final e;
+
+  SendMessageDataStateBad(this.e);
+}
+
+class ReciveMessageDataStateGood extends HomeState {}
+
+class ReciveMessageDataStateBad extends HomeState {
+  final e;
+
+  ReciveMessageDataStateBad(this.e);
+}
+
+class GetMessageDataStateGood extends HomeState {}

@@ -1,26 +1,39 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_aaw/Home/cubit/home_cubit.dart';
 import 'package:flutter_aaw/pages/Auth/login/cubit/login_cubit.dart';
 import 'package:flutter_aaw/pages/Auth/login/login.dart';
 import 'package:flutter_aaw/pages/Auth/register/cubit/register_cubit.dart';
-import 'package:flutter_aaw/pages/users.dart';
+import 'package:flutter_aaw/pages/Home.dart';
 import 'package:flutter_aaw/shared/blocObserver/observer.dart';
 import 'package:flutter_aaw/shared/components/constants.dart';
 import 'package:flutter_aaw/shared/helper/cashHelper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:jwt_decoder/jwt_decoder.dart';
+// import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'dio/dioHalper.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
   Bloc.observer = MyBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   await CachHelper.init();
   DioHelper.init();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   Widget startWidget;
-  TOKEN = CachHelper.getData(key: 'token') ?? '';
+  TOKEN = await CachHelper.getData(key: 'token') ?? '';
   if (TOKEN != '') {
-    startWidget = Users();
+    DECODEDTOKEN = JwtDecoder.decode(TOKEN);
+    print(DECODEDTOKEN['_id']);
+  }
+
+  // TOKEN = JWT.decode(CachHelper.getData(key: 'token') ?? '');
+  // print(TOKEN.toString());
+  if (TOKEN != '') {
+    startWidget = Home();
   } else {
     startWidget = Login();
   }
@@ -41,7 +54,10 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: ((context) => RegisterCubit())),
         BlocProvider(create: ((context) => LoginCubit())),
-        BlocProvider(create: ((context) => HomeCubit()..getUser())),
+        BlocProvider(
+            create: ((context) => HomeCubit()
+              ..getUserInfo()
+              ..getUsers())),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

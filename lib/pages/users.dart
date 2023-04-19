@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_aaw/models/userModel.dart';
+import 'package:flutter_aaw/pages/addUser.dart';
 import 'package:flutter_aaw/pages/userDetail.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,40 +17,30 @@ class Users extends StatelessWidget {
     return BlocConsumer<HomeCubit, HomeState>(
       builder: (BuildContext context, state) {
         return Scaffold(
-            floatingActionButton: defaultSubmit1(
-              background: Colors.orangeAccent,
-              onPressed: () {
-                CachHelper.removdata(key: "token").then((value) {
-                  // _homeCubit.resetWhenLogout();
-                  navigatAndFinish(context: context, page: Login());
-                });
-                // navigatAndReturn(context: context, page: AddUser());
-              },
-              isothericon: true,
-              icon: const Icon(Icons.add),
-            ),
-            appBar: defaultAppBar(
-                canreturn: false,
-                title: const Text('   Home'),
-                onPressed: () {
-                  // Navigator.pop(context);
-                }),
+            // floatingActionButton: defaultSubmit1(
+            //   background: Colors.orangeAccent,
+            //   onPressed: () {
+            //     navigatAndReturn(context: context, page: AddUser());
+            //   },
+            //   isothericon: true,
+            //   icon: const Icon(Icons.add),
+            // ),
             body: ConditionalBuilder(
-              builder: (BuildContext context) {
-                return ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) => defaultTask(context,
-                        HomeCubit.get(context).userModelList[index], index),
-                    itemCount: HomeCubit.get(context).userModelList.length);
-              },
-              condition: State is! LodinGetUsersState &&
-                  HomeCubit.get(context).userModelList != [],
-              fallback: (BuildContext context) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
-            ));
+          builder: (BuildContext context) {
+            return ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (context, index) => defaultTask(context,
+                    HomeCubit.get(context).userModelList[index], index),
+                itemCount: HomeCubit.get(context).userModelList.length);
+          },
+          condition: State is! LodinGetUsersState &&
+              HomeCubit.get(context).userModelList != [],
+          fallback: (BuildContext context) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ));
       },
       listener: (BuildContext context, Object? state) async {
         if (state is DeleteUserStateGood) {
@@ -150,7 +141,7 @@ Widget defaultTask(context, UserModel model, int id) => Card(
           ],
         ),
         trailing: Icon(
-          Icons.keyboard_arrow_right,
+          Icons.messenger_outline_outlined,
           size: 30,
           color: Colors.pink[800],
         ),
