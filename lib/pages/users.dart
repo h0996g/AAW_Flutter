@@ -48,7 +48,7 @@ class Users extends StatelessWidget {
       },
       listener: (BuildContext context, Object? state) async {
         if (state is DeleteUserStateGood) {
-          showToast(msg: 'succes', state: ToastStates.success);
+          showToast(msg: 'Deleted Successfully', state: ToastStates.success);
 
           Navigator.pop(context); //! hadi t3 showdialog
         } else if (state is DeleteUserStateBad) {

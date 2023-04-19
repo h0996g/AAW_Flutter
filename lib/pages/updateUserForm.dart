@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_aaw/models/userModel.dart';
-import 'package:flutter_aaw/pages/userDetail.dart';
 import 'package:flutter_aaw/shared/components/components.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../Home/cubit/home_cubit.dart';
 
 class UpdateUserForm extends StatefulWidget {
-  final UserModel model;
+  // final UserModel model;
 
   final emailController = TextEditingController();
-  UpdateUserForm({super.key, required this.model});
+
+  UpdateUserForm({super.key});
 
   @override
   State<UpdateUserForm> createState() => _UpdateUserFormState();
@@ -23,8 +22,8 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
   @override
   void initState() {
     // TODO: implement setState
-    _emailController.text = widget.model.email!;
-    _nameController.text = widget.model.name!;
+    _emailController.text = HomeCubit.get(context).userModel!.email!;
+    _nameController.text = HomeCubit.get(context).userModel!.name!;
     super.initState();
   }
 
@@ -45,10 +44,11 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
       listener: (context, state) {
         // TODO: implement listener
         if (state is UpdateUserStateGood) {
-          showToast(msg: 'Success', state: ToastStates.success);
-          navigatAndFinish(
-              context: context,
-              page: UserDetail(model: HomeCubit.get(context).userModel!));
+          showToast(msg: 'Updated Successfully', state: ToastStates.success);
+          Navigator.pop(context);
+          // navigatAndFinish(
+          //     context: context,
+          //     page: UserDetail(model: HomeCubit.get(context).userModel!));
         }
       },
       builder: (context, state) {
@@ -102,7 +102,7 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                       onPressed: () {
                         if (formkey.currentState!.validate()) {
                           HomeCubit.get(context).updateUser(
-                              id: widget.model.id!,
+                              id: HomeCubit.get(context).userModel!.id!,
                               name: _nameController.text,
                               email: _emailController.text);
                         }

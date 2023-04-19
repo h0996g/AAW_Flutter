@@ -17,7 +17,7 @@ class AddUser extends StatelessWidget {
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
         if (state is AddUserStateGood) {
-          showToast(msg: 'Successfuly', state: ToastStates.success);
+          showToast(msg: 'Add User Successfuly', state: ToastStates.success);
           navigatAndFinish(context: context, page: Users());
         } else if (state is AddUserStateBad) {
           showToast(msg: state.err, state: ToastStates.error);

@@ -62,7 +62,7 @@ class HomeCubit extends Cubit<HomeState> {
   void getUserDetail({required String id}) {
     emit(LodinGetUserDetailState());
 
-    DioHelper.postData(
+    DioHelper.getData(
       url: GETUSERDETAIL + id.toString(),
     ).then((value) {
       print('dkhol l detail');
