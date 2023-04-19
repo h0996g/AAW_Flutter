@@ -31,7 +31,7 @@ class HomeCubit extends Cubit<HomeState> {
   void addUser({required String name, required String email}) {
     emit(LodinAddUserState());
     UserModel model = UserModel(name: name, email: email);
-    DioHelper.postData(url: CREATEUSER, data: model.toMap()).then((value) {
+    DioHelper.postData(url: REGISTERUSER, data: model.toMap()).then((value) {
       print('zado');
       // _userModel = UserModel.fromJson(value.data);
       userModelList.add(UserModel.fromJson(value.data));

@@ -6,7 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../Home/cubit/home_cubit.dart';
 import '../shared/components/components.dart';
-import 'addUser.dart';
+import '../shared/helper/cashHelper.dart';
+import 'Auth/login/login.dart';
 
 class Users extends StatelessWidget {
   @override
@@ -18,7 +19,11 @@ class Users extends StatelessWidget {
             floatingActionButton: defaultSubmit1(
               background: Colors.orangeAccent,
               onPressed: () {
-                navigatAndReturn(context: context, page: AddUser());
+                CachHelper.removdata(key: "token").then((value) {
+                  // _homeCubit.resetWhenLogout();
+                  navigatAndFinish(context: context, page: Login());
+                });
+                // navigatAndReturn(context: context, page: AddUser());
               },
               isothericon: true,
               icon: const Icon(Icons.add),
