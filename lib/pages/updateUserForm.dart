@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_aaw/shared/components/components.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../Home/cubit/home_cubit.dart';
 
@@ -64,6 +67,60 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
             child: Form(
               key: formkey,
               child: Column(children: [
+                Stack(
+                  alignment: AlignmentDirectional.bottomEnd,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: HomeCubit.get(context).imageProfile !=
+                              null
+                          ? Image.file(File(
+                                  HomeCubit.get(context).imageProfile!.path))
+                              .image
+                          : const NetworkImage(
+                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9-6bTSqGzEDlxq6CbtlyAHvfr47PT5BpaGTi0nq4&s'),
+                      radius: 60,
+                    ),
+                    IconButton(
+                      splashRadius: double.minPositive,
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  title: const Text("Choose the source :"),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () {
+                                          HomeCubit.get(context)
+                                              .imagePickerProfile(
+                                                  ImageSource.camera)
+                                              .then((value) {
+                                            Navigator.pop(context);
+                                          });
+                                        },
+                                        child: const Text("Camera")),
+                                    TextButton(
+                                        onPressed: () {
+                                          HomeCubit.get(context)
+                                              .imagePickerProfile(
+                                                  ImageSource.gallery)
+                                              .then((value) {
+                                            Navigator.pop(context);
+                                          });
+                                        },
+                                        child: const Text("Gallery"))
+                                  ],
+                                ));
+                      },
+                      icon: const CircleAvatar(
+                        child: Icon(
+                          Icons.camera,
+                          color: Colors.white,
+                          size: 25,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
                 const SizedBox(
                   height: 30,
                 ),

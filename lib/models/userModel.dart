@@ -4,20 +4,16 @@ class UserModel {
   String? email;
   String? password;
   String? phone;
-
-  UserModel({
-    this.id,
-    this.name,
-    this.email,
-    this.password,
-    this.phone,
-  });
+  String? image;
+  UserModel(
+      {this.id, this.name, this.email, this.password, this.phone, this.image});
   UserModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['_id'];
     email = json['email'];
     password = json['password'];
     phone = json['phone'];
+    image = json['image'];
   }
   Map<String, dynamic> toMap() {
     return {
@@ -26,6 +22,7 @@ class UserModel {
       'email': email,
       'password': password,
       'phone': phone,
+      'image': image,
     };
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_aaw/pages/users.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
+import '../../../Home/cubit/home_cubit.dart';
 import '../../../shared/components/components.dart';
 import '../../../shared/components/constants.dart';
 import '../../../shared/helper/cashHelper.dart';
@@ -164,7 +165,8 @@ class Register extends StatelessWidget {
               .then((value) async {
             TOKEN = await CachHelper.getData(key: 'token');
             DECODEDTOKEN = JwtDecoder.decode(state.token);
-
+            HomeCubit.get(context).getCurrentUserInfo();
+            HomeCubit.get(context).getOtherUsers();
             navigatAndFinish(context: context, page: const Home());
           });
         } else if (state is RegisterUserStateBad) {

@@ -9,6 +9,8 @@ import '../Home/cubit/home_cubit.dart';
 import '../shared/components/components.dart';
 
 class Profile extends StatelessWidget {
+  const Profile({super.key});
+
   @override
   Widget build(BuildContext context) {
     // print(model.id);
@@ -31,10 +33,10 @@ class Profile extends StatelessWidget {
                     SizedBox(
                       height: size.height * 0.05,
                     ),
-                    const CircleAvatar(
-                      radius: 60,
+                    CircleAvatar(
                       backgroundImage: NetworkImage(
-                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9-6bTSqGzEDlxq6CbtlyAHvfr47PT5BpaGTi0nq4&s'),
+                          HomeCubit.get(context).userModel!.image!),
+                      radius: 60,
                     ),
                     const SizedBox(
                       height: 20,
@@ -68,7 +70,7 @@ class Profile extends StatelessWidget {
                   ],
                 );
               },
-              condition: state is! LodinGetUserDetailState,
+              condition: state is! LodinGetCurrentUserDetailState,
               fallback: (BuildContext context) {
                 return const Center(child: CircularProgressIndicator());
               },

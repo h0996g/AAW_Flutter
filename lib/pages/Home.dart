@@ -42,6 +42,7 @@ class Home extends StatelessWidget {
             CachHelper.removdata(key: "token").then((value) {
               // _homeCubit.resetWhenLogout();
               navigatAndFinish(context: context, page: Login());
+              HomeCubit.get(context).resetValueWhenelogout();
             });
           }),
           appBar: AppBar(
@@ -51,7 +52,8 @@ class Home extends StatelessWidget {
             builder: (BuildContext context) {
               return _homeCubit.userScreen[_homeCubit.currentIndex];
             },
-            condition: true,
+            condition: HomeCubit.get(context).userModel != null &&
+                HomeCubit.get(context).userModelList != [],
             fallback: (BuildContext context) {
               return const Center(
                 child: CircularProgressIndicator(),

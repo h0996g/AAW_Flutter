@@ -1,5 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_aaw/Home/cubit/home_cubit.dart';
 import 'package:flutter_aaw/pages/users.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -130,15 +131,15 @@ class Login extends StatelessWidget {
         if (state is LoginUserStateGood) {
           showToast(msg: "Login Successful", state: ToastStates.success);
           // sleep(const Duration(seconds: 1));
-          CachHelper.putcache(key: "token", value: state.token)
-              .then((value) async {
+          CachHelper.putcache(key: "token", value: state.token).then((value) {
             print(value.toString());
-            TOKEN = await CachHelper.getData(key: 'token');
+            TOKEN = CachHelper.getData(key: 'token');
             DECODEDTOKEN = JwtDecoder.decode(state.token);
             print(DECODEDTOKEN['_id']);
-
-            navigatAndFinish(context: context, page: const Home());
+            HomeCubit.get(context).getCurrentUserInfo();
+            HomeCubit.get(context).getOtherUsers();
           });
+          navigatAndFinish(context: context, page: const Home());
         } else if (state is LoginUserStateBad) {
           showToast(msg: state.err, state: ToastStates.error);
         }

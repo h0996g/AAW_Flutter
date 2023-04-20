@@ -8,14 +8,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../Home/cubit/home_cubit.dart';
 import '../shared/components/components.dart';
 
-class UserDetail extends StatelessWidget {
+class UserDetail extends StatefulWidget {
   final UserModel model;
   UserDetail({required this.model});
 
   @override
+  State<UserDetail> createState() => _UserDetailState();
+}
+
+class _UserDetailState extends State<UserDetail> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    HomeCubit.get(context).getUserDetail(id: widget.model.id.toString());
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    print(model.id);
-    HomeCubit.get(context).getUserDetail(id: model.id.toString());
+    // print(model.id);
     Size size = MediaQuery.of(context).size;
     return (BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {

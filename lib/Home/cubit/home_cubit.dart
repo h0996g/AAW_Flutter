@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_aaw/dio/dioHalper.dart';
@@ -7,6 +9,8 @@ import 'package:flutter_aaw/pages/profile.dart';
 import 'package:flutter_aaw/pages/users.dart';
 import 'package:flutter_aaw/shared/components/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import '../../models/messageModel.dart';
 part 'home_state.dart';
@@ -21,7 +25,7 @@ class HomeCubit extends Cubit<HomeState> {
   List<Widget> userScreen = [
     const Chats(),
     Users(),
-    Profile(),
+    const Profile(),
   ];
   List<String> appbarScreen = const [
     'Chats',
@@ -42,24 +46,24 @@ class HomeCubit extends Cubit<HomeState> {
     emit(ChangeButtonNavStateGood());
   }
 
-  void getUserInfo() {
-    emit(LodinGetUserDetailState());
+  void getCurrentUserInfo() {
+    emit(LodinGetCurrentUserDetailState());
 
     DioHelper.getData(
       url: GETUSERDETAIL + DECODEDTOKEN['_id'].toString(),
     ).then((value) {
-      print('dkhol l detail');
+      print('current user');
       userModel = UserModel.fromJson(value.data);
-      emit(GetUserDetailStateGood());
+      emit(GetCurrentUserDetailStateGood());
     }).catchError((e) {
       print(e.toString());
-      emit(GetUserDetailStateBad(e.toString()));
+      emit(GetCurrentUserDetailStateBad(e.toString()));
     });
   }
 
-  Future<void> getUsers() async {
+  Future<void> getOtherUsers() async {
     userModelList = [];
-    emit(LodinGetUsersState());
+    emit(LodinGetOtherUsersState());
     await DioHelper.getData(url: GETALLUSER).then((value) {
       print('jabhom');
       for (var element in value.data) {
@@ -68,12 +72,12 @@ class HomeCubit extends Cubit<HomeState> {
         }
       }
 
-      print(userModelList[0].id);
+      // print(userModelList[0].id);
       // print(value.data);
-      emit(GetUsersStateGood());
+      emit(GetOtherUsersStateGood());
     }).catchError((e) {
       print(e.toString());
-      emit(GetUsersStateBad(e.toString()));
+      emit(GetOtherUsersStateBad(e.toString()));
     });
   }
 
@@ -100,7 +104,7 @@ class HomeCubit extends Cubit<HomeState> {
     ).then((value) {
       print('na7a');
 
-      getUsers();
+      getOtherUsers();
       emit(DeleteUserStateGood());
     }).catchError((e) {
       print(e.toString());
@@ -123,16 +127,25 @@ class HomeCubit extends Cubit<HomeState> {
     });
   }
 
-  void updateUser(
-      {required String id, required String name, required String email}) {
+  Future<void> updateUser(
+      {required String id, required String name, required String email}) async {
     emit(LodinUpdateUserState());
 
-    DioHelper.putData(
-        url: GETUSERDETAIL + id.toString(),
-        data: {'email': email, 'name': name}).then((value) {
+    if (imageProfile != null) {
+      await updateProfileImg();
+    }
+    UserModel _model = UserModel(
+      name: name,
+      email: email,
+      image: linkProfileImg ?? userModel!.image,
+    );
+
+    await DioHelper.putData(
+            url: GETUSERDETAIL + id.toString(), data: _model.toMap())
+        .then((value) {
       print('badalt info user');
-      otherUserModel = UserModel.fromJson(value.data);
-      getUserInfo();
+      userModel = UserModel.fromJson(value.data);
+      getCurrentUserInfo();
       emit(UpdateUserStateGood());
     }).catchError((e) {
       print(e.toString());
@@ -199,4 +212,37 @@ class HomeCubit extends Cubit<HomeState> {
       emit(GetMessageDataStateGood());
     });
   }
+  // !------------------------------
+
+  // !--------imagepicker
+  XFile? imageProfile;
+  Future<void> imagePickerProfile(ImageSource source) async {
+    final ImagePicker _pickerProfile = ImagePicker();
+    _pickerProfile.pickImage(source: source).then((value) {
+      imageProfile = value;
+      emit(ImagePickerProfileStateGood());
+    }).catchError((e) {
+      emit(ImagePickerProfileStateBad());
+    });
+  }
+
+  String? linkProfileImg;
+  String? linkCoverImg;
+  Future<void> updateProfileImg() async {
+    await firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('users/${Uri.file(imageProfile!.path).pathSegments.last}')
+        .putFile(File(imageProfile!.path))
+        .then((p0) async {
+      await p0.ref.getDownloadURL().then((value) {
+        linkProfileImg = value;
+        print(linkProfileImg);
+        // emit(UploadProfileImgAndGetUrlStateGood());  //! bah matro7ch  LodingUpdateUserStateGood() t3 Widget LinearProgressIndicator
+      }).catchError((e) {
+        emit(UploadProfileImgAndGetUrlStateBad());
+      });
+    });
+  }
+
+  // !--------------------------------------------
 }

@@ -33,7 +33,7 @@ class Users extends StatelessWidget {
                     HomeCubit.get(context).userModelList[index], index),
                 itemCount: HomeCubit.get(context).userModelList.length);
           },
-          condition: State is! LodinGetUsersState &&
+          condition: State is! LodinGetOtherUsersState &&
               HomeCubit.get(context).userModelList != [],
           fallback: (BuildContext context) {
             return const Center(

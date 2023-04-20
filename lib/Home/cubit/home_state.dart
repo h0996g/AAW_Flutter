@@ -16,14 +16,14 @@ class AddUserStateBad extends HomeState {
   AddUserStateBad(this.err);
 }
 
-class LodinGetUsersState extends HomeState {}
+class LodinGetOtherUsersState extends HomeState {}
 
-class GetUsersStateGood extends HomeState {}
+class GetOtherUsersStateGood extends HomeState {}
 
-class GetUsersStateBad extends HomeState {
+class GetOtherUsersStateBad extends HomeState {
   final err;
 
-  GetUsersStateBad(this.err);
+  GetOtherUsersStateBad(this.err);
 }
 
 class LodinDeleteUserState extends HomeState {}
@@ -34,6 +34,16 @@ class DeleteUserStateBad extends HomeState {
   final err;
 
   DeleteUserStateBad(this.err);
+}
+
+class LodinGetCurrentUserDetailState extends HomeState {}
+
+class GetCurrentUserDetailStateGood extends HomeState {}
+
+class GetCurrentUserDetailStateBad extends HomeState {
+  final err;
+
+  GetCurrentUserDetailStateBad(this.err);
 }
 
 class LodinGetUserDetailState extends HomeState {}
@@ -73,3 +83,11 @@ class ReciveMessageDataStateBad extends HomeState {
 }
 
 class GetMessageDataStateGood extends HomeState {}
+
+class ImagePickerProfileStateGood extends HomeState {}
+
+class ImagePickerProfileStateBad extends HomeState {}
+
+class UploadProfileImgAndGetUrlStateGood extends HomeState {}
+
+class UploadProfileImgAndGetUrlStateBad extends HomeState {}

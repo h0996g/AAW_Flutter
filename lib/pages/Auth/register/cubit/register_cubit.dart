@@ -25,8 +25,13 @@ class RegisterCubit extends Cubit<RegisterState> {
       required String phone,
       required String password}) {
     emit(LodinRegisterUserState());
-    UserModel _userModel =
-        UserModel(name: name, email: email, password: password, phone: phone);
+    UserModel _userModel = UserModel(
+        name: name,
+        email: email,
+        password: password,
+        phone: phone,
+        image:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9-6bTSqGzEDlxq6CbtlyAHvfr47PT5BpaGTi0nq4&s');
     DioHelper.postData(url: REGISTERUSER, data: _userModel.toMap())
         .then((value) {
       print('zado');
