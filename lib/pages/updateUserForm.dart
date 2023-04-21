@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_aaw/pages/Auth/login/login.dart';
 import 'package:flutter_aaw/shared/components/components.dart';
@@ -53,11 +54,17 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
           Navigator.pop(context);
         }
         if (state is DeleteUserStateGood) {
+          showToast(msg: 'Delete Successfully', state: ToastStates.success);
           CachHelper.removdata(key: "token").then((value) {
             HomeCubit.get(context).resetValueWhenelogout();
             navigatAndFinish(context: context, page: Login());
-            showToast(msg: 'Delete Successfully', state: ToastStates.success);
           });
+
+// CachHelper.removdata(key: "token").then((value) {
+//             // _homeCubit.resetWhenLogout();
+//             navigatAndFinish(context: context, page: Login());
+//             HomeCubit.get(context).resetValueWhenelogout();
+//           });
         }
       },
       builder: (context, state) {
@@ -66,8 +73,11 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
               title: const Text('Update User'),
               canreturn: true,
               onPressed: () {
+                if (state is LodinUpdateUserState) {
+                  return null;
+                }
                 Navigator.pop(context);
-                HomeCubit.get(context).imageProfile = null;
+                HomeCubit.get(context).comp = null;
                 HomeCubit.get(context).linkProfileImg = null;
               }),
           body: Padding(
@@ -77,7 +87,7 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
               child: SingleChildScrollView(
                 child: SizedBox(
                   height:
-                      size.height - defaultAppBar().preferredSize.height * 2,
+                      size.height - defaultAppBar().preferredSize.height * 2.5,
                   child: Column(
                       //
                       // crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -98,11 +108,9 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                           children: [
                             CircleAvatar(
                               backgroundImage: HomeCubit.get(context)
-                                          .imageProfile !=
+                                          .comp !=
                                       null
-                                  ? Image.file(File(HomeCubit.get(context)
-                                          .imageProfile!
-                                          .path))
+                                  ? Image.file(HomeCubit.get(context).comp!)
                                       .image
                                   : NetworkImage(
                                       HomeCubit.get(context).userModel!.image!),
@@ -119,6 +127,10 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                                           actions: [
                                             TextButton(
                                                 onPressed: () {
+                                                  if (state
+                                                      is LodinUpdateUserState) {
+                                                    return null;
+                                                  }
                                                   HomeCubit.get(context)
                                                       .imagePickerProfile(
                                                           ImageSource.camera)
@@ -129,6 +141,10 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                                                 child: const Text("Camera")),
                                             TextButton(
                                                 onPressed: () {
+                                                  if (state
+                                                      is LodinUpdateUserState) {
+                                                    return null;
+                                                  }
                                                   HomeCubit.get(context)
                                                       .imagePickerProfile(
                                                           ImageSource.gallery)
@@ -187,6 +203,9 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                               background: Colors.grey,
                               onPressed: () {
                                 if (formkey.currentState!.validate()) {
+                                  if (state is LodinUpdateUserState) {
+                                    return null;
+                                  }
                                   HomeCubit.get(context).updateUser(
                                       id: HomeCubit.get(context).userModel!.id!,
                                       name: _nameController.text,
@@ -199,13 +218,13 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                         // ),
                         Spacer(),
                         Padding(
-                          padding: const EdgeInsets.symmetric(
+                          padding: EdgeInsets.symmetric(
                               horizontal: 60, vertical: 20),
                           child: defaultSubmit2(
                               text: 'Delete Account',
                               background: Colors.red,
-                              onPressed: () {
-                                showDialog(
+                              onPressed: () async {
+                                await showDialog(
                                     context: context,
                                     builder: (context) => AlertDialog(
                                           title: const Text(
@@ -228,8 +247,10 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                                                           id: HomeCubit.get(
                                                                   context)
                                                               .userModel!
-                                                              .id!);
-                                                  Navigator.pop(context);
+                                                              .id!)
+                                                      .then((value) {
+                                                    // Navigator.pop(context);
+                                                  });
                                                 },
                                                 child: const Text(
                                                   "Delete",
@@ -238,6 +259,21 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                                                 ))
                                           ],
                                         ));
+                                // HomeCubit.get(context)
+                                //     .deleteUser(
+                                //         id: HomeCubit.get(context)
+                                //             .userModel!
+                                //             .id!)
+                                //     .then((value) async {
+                                //   // await FirebaseFirestore.instance
+                                //   //     .collection('users')
+                                //   //     .doc(HomeCubit.get(context).userModel!.id)
+                                //   //     .delete()
+                                //   //     .then((value) {})
+                                //   //     .catchError((e) {
+                                //   //   print(e.toString());
+                                //   // });
+                                // });
                               }),
                         )
                       ]),

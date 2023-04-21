@@ -38,13 +38,13 @@ class Home extends StatelessWidget {
             ],
             currentIndex: _homeCubit.currentIndex,
           ),
-          floatingActionButton: FloatingActionButton(onPressed: () {
-            CachHelper.removdata(key: "token").then((value) {
-              // _homeCubit.resetWhenLogout();
-              navigatAndFinish(context: context, page: Login());
-              HomeCubit.get(context).resetValueWhenelogout();
-            });
-          }),
+          // floatingActionButton: FloatingActionButton(onPressed: () {
+          //   CachHelper.removdata(key: "token").then((value) {
+          //     // _homeCubit.resetWhenLogout();
+          //     navigatAndFinish(context: context, page: Login());
+          //     HomeCubit.get(context).resetValueWhenelogout();
+          //   });
+          // }),
           appBar: AppBar(
             title: Text(_homeCubit.appbarScreen[_homeCubit.currentIndex]),
           ),

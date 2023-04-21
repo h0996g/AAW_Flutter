@@ -9,6 +9,7 @@ import 'package:flutter_aaw/pages/profile.dart';
 import 'package:flutter_aaw/pages/users.dart';
 import 'package:flutter_aaw/shared/components/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
@@ -101,7 +102,7 @@ class HomeCubit extends Cubit<HomeState> {
     });
   }
 
-  void deleteUser({required String id}) {
+  deleteUser({required String id}) {
     emit(LodinDeleteUserState());
 
     DioHelper.deleteData(
@@ -109,7 +110,7 @@ class HomeCubit extends Cubit<HomeState> {
     ).then((value) {
       print('na7a');
 
-      getOtherUsers();
+      // getOtherUsers();
       emit(DeleteUserStateGood());
     }).catchError((e) {
       print(e.toString());
@@ -136,7 +137,7 @@ class HomeCubit extends Cubit<HomeState> {
       {required String id, required String name, required String email}) async {
     emit(LodinUpdateUserState());
 
-    if (imageProfile != null) {
+    if (comp != null) {
       await updateProfileImg();
     }
     UserModel _model = UserModel(
@@ -219,13 +220,24 @@ class HomeCubit extends Cubit<HomeState> {
   }
   // !------------------------------
 
-  // !--------imagepicker
-  XFile? imageProfile;
+  // !--------imagepicker with Compress
+  // XFile? imageProfile;
+  File? comp;
   Future<void> imagePickerProfile(ImageSource source) async {
     final ImagePicker _pickerProfile = ImagePicker();
-    _pickerProfile.pickImage(source: source).then((value) {
-      imageProfile = value;
-      emit(ImagePickerProfileStateGood());
+    _pickerProfile.pickImage(source: source).then((value) async {
+      // imageProfile = value;
+      await FlutterImageCompress.compressAndGetFile(
+        File(value!.path).absolute.path,
+        File(value.path).path,
+        quality: 10,
+      ).then((value) {
+        comp = value;
+        emit(ImagePickerProfileStateGood());
+      });
+      // imageProfile = value;
+
+      // emit(ImagePickerProfileStateGood());
     }).catchError((e) {
       emit(ImagePickerProfileStateBad());
     });
@@ -235,8 +247,8 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> updateProfileImg() async {
     await firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('users/${Uri.file(imageProfile!.path).pathSegments.last}')
-        .putFile(File(imageProfile!.path))
+        .child('users/${Uri.file(comp!.path).pathSegments.last}')
+        .putFile(comp!)
         .then((p0) async {
       await p0.ref.getDownloadURL().then((value) {
         linkProfileImg = value;
@@ -248,5 +260,15 @@ class HomeCubit extends Cubit<HomeState> {
     });
   }
 
+  // Future<void> compress() async {
+  //   var result = await FlutterImageCompress.compressAndGetFile(
+  //     _imageFile!.absolute.path,
+  //     _imageFile!.path + 'compressed.jpg',
+  //     quality: 66,
+  //   );
+  //   setState(() {
+  //     _compressedFile = result;
+  //   });
+  // }
   // !--------------------------------------------
 }
