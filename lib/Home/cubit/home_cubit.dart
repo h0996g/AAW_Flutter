@@ -18,7 +18,7 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
   static HomeCubit get(context) => BlocProvider.of(context);
-  List<UserModel> userModelList = [];
+  List<UserModel>? userModelList;
   UserModel? otherUserModel;
   UserModel? userModel;
   int currentIndex = 0;
@@ -37,7 +37,7 @@ class HomeCubit extends Cubit<HomeState> {
     currentIndex = 0;
     userModel = null;
     otherUserModel = null;
-    userModelList = [];
+    userModelList = null;
     messageModelList = [];
   }
 
@@ -62,14 +62,19 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> getOtherUsers() async {
-    userModelList = [];
+    userModelList = null;
     emit(LodinGetOtherUsersState());
     await DioHelper.getData(url: GETALLUSER).then((value) {
       print('jabhom');
+      userModelList = []; //! bh y9der ydirl.ha add (ni chare7 3lh drt.ha Null )
       for (var element in value.data) {
         if (element['_id'] != DECODEDTOKEN['_id']) {
-          userModelList.add(UserModel.fromJson(element));
+          userModelList!.add(UserModel.fromJson(element));
         }
+      }
+      // ! hadi 3la gal ConditionalBuilder li fl home kone ykon kayn ghir user wa7ed li raw mdayr Login Bh mayb9ach CircleProgre.. ydor
+      if (userModelList == null) {
+        userModelList = [];
       }
 
       // print(userModelList[0].id);
@@ -87,7 +92,7 @@ class HomeCubit extends Cubit<HomeState> {
     DioHelper.postData(url: REGISTERUSER, data: model.toMap()).then((value) {
       print('zado');
       // _userModel = UserModel.fromJson(value.data);
-      userModelList.add(UserModel.fromJson(value.data));
+      userModelList!.add(UserModel.fromJson(value.data));
 
       emit(AddUserStateGood());
     }).catchError((e) {

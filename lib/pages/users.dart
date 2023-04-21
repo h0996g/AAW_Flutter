@@ -1,14 +1,10 @@
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_aaw/models/userModel.dart';
-import 'package:flutter_aaw/pages/addUser.dart';
 import 'package:flutter_aaw/pages/userDetail.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../Home/cubit/home_cubit.dart';
 import '../shared/components/components.dart';
-import '../shared/helper/cashHelper.dart';
-import 'Auth/login/login.dart';
 
 class Users extends StatelessWidget {
   @override
@@ -26,11 +22,46 @@ class Users extends StatelessWidget {
           //   icon: const Icon(Icons.add),
           // ),
 
-          body: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (context, index) => defaultTask(
-                  context, HomeCubit.get(context).userModelList[index], index),
-              itemCount: HomeCubit.get(context).userModelList.length),
+          body: RefreshIndicator(
+              edgeOffset: 0,
+              onRefresh: () {
+                HomeCubit.get(context).getOtherUsers();
+                return Future.delayed(Duration(seconds: 3));
+              },
+              child: HomeCubit.get(context).userModelList!.isNotEmpty
+                  ? ListView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemBuilder: (context, index) => defaultTask(context,
+                          HomeCubit.get(context).userModelList![index], index),
+                      itemCount: HomeCubit.get(context).userModelList!.length)
+                  : Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        // crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "EMPTY",
+                            style: TextStyle(fontSize: 50),
+                          ),
+                          TextButton(
+                              onPressed: () {},
+                              child: MaterialButton(
+                                splashColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                minWidth: double.minPositive,
+                                child: Icon(
+                                  Icons.refresh,
+                                  size: 50,
+                                  color: Colors.green,
+                                ),
+                                onPressed: () {
+                                  HomeCubit.get(context).getOtherUsers();
+                                },
+                              ))
+                        ],
+                      ),
+                    )),
         );
       },
       listener: (BuildContext context, Object? state) async {

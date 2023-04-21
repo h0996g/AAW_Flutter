@@ -54,8 +54,8 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
         }
         if (state is DeleteUserStateGood) {
           CachHelper.removdata(key: "token").then((value) {
-            navigatAndFinish(context: context, page: Login());
             HomeCubit.get(context).resetValueWhenelogout();
+            navigatAndFinish(context: context, page: Login());
             showToast(msg: 'Delete Successfully', state: ToastStates.success);
           });
         }
