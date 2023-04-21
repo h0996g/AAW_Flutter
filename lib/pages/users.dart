@@ -17,30 +17,21 @@ class Users extends StatelessWidget {
     return BlocConsumer<HomeCubit, HomeState>(
       builder: (BuildContext context, state) {
         return Scaffold(
-            // floatingActionButton: defaultSubmit1(
-            //   background: Colors.orangeAccent,
-            //   onPressed: () {
-            //     navigatAndReturn(context: context, page: AddUser());
-            //   },
-            //   isothericon: true,
-            //   icon: const Icon(Icons.add),
-            // ),
-            body: ConditionalBuilder(
-          builder: (BuildContext context) {
-            return ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (context, index) => defaultTask(context,
-                    HomeCubit.get(context).userModelList[index], index),
-                itemCount: HomeCubit.get(context).userModelList.length);
-          },
-          condition: State is! LodinGetOtherUsersState &&
-              HomeCubit.get(context).userModelList != [],
-          fallback: (BuildContext context) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
-        ));
+          // floatingActionButton: defaultSubmit1(
+          //   background: Colors.orangeAccent,
+          //   onPressed: () {
+          //     navigatAndReturn(context: context, page: AddUser());
+          //   },
+          //   isothericon: true,
+          //   icon: const Icon(Icons.add),
+          // ),
+
+          body: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              itemBuilder: (context, index) => defaultTask(
+                  context, HomeCubit.get(context).userModelList[index], index),
+              itemCount: HomeCubit.get(context).userModelList.length),
+        );
       },
       listener: (BuildContext context, Object? state) async {
         if (state is DeleteUserStateGood) {
@@ -66,42 +57,42 @@ Widget defaultTask(context, UserModel model, int id) => Card(
                 model: model,
               ));
         },
-        onLongPress: () {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  actions: [
-                    TextButton(
-                        onPressed: () {},
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.delete,
-                              color: Colors.red,
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                HomeCubit.get(context)
-                                    .deleteUser(id: model.id!);
-                              },
-                              child: const Text(
-                                'Delete',
-                                style: TextStyle(
-                                  color: Colors.red,
-                                ),
-                              ),
-                            )
-                          ],
-                        ))
-                  ],
-                );
-              });
-        },
+        // onLongPress: () {
+        //   showDialog(
+        //       context: context,
+        //       builder: (context) {
+        //         return AlertDialog(
+        //           actions: [
+        //             TextButton(
+        //                 onPressed: () {},
+        //                 child: Row(
+        //                   mainAxisAlignment: MainAxisAlignment.center,
+        //                   children: [
+        //                     const Icon(
+        //                       Icons.delete,
+        //                       color: Colors.red,
+        //                     ),
+        //                     const SizedBox(
+        //                       width: 10,
+        //                     ),
+        //                     TextButton(
+        //                       onPressed: () {
+        //                         // HomeCubit.get(context)
+        //                         //     .deleteUser(id: model.id!);
+        //                       },
+        //                       child: const Text(
+        //                         'Delete',
+        //                         style: TextStyle(
+        //                           color: Colors.red,
+        //                         ),
+        //                       ),
+        //                     )
+        //                   ],
+        //                 ))
+        //           ],
+        //         );
+        //       });
+        // },
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         leading: Container(
@@ -114,8 +105,7 @@ Widget defaultTask(context, UserModel model, int id) => Card(
           child: CircleAvatar(
             backgroundColor: Colors.transparent,
             radius: 20,
-            child: Image.network(
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9-6bTSqGzEDlxq6CbtlyAHvfr47PT5BpaGTi0nq4&s'),
+            child: Image.network(model.image!),
           ),
         ),
         title: Text(

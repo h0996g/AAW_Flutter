@@ -46,10 +46,10 @@ class HomeCubit extends Cubit<HomeState> {
     emit(ChangeButtonNavStateGood());
   }
 
-  void getCurrentUserInfo() {
+  Future<void> getCurrentUserInfo() async {
     emit(LodinGetCurrentUserDetailState());
 
-    DioHelper.getData(
+    await DioHelper.getData(
       url: GETUSERDETAIL + DECODEDTOKEN['_id'].toString(),
     ).then((value) {
       print('current user');
@@ -67,7 +67,7 @@ class HomeCubit extends Cubit<HomeState> {
     await DioHelper.getData(url: GETALLUSER).then((value) {
       print('jabhom');
       for (var element in value.data) {
-        if (element['_id'] != userModel!.id) {
+        if (element['_id'] != DECODEDTOKEN['_id']) {
           userModelList.add(UserModel.fromJson(element));
         }
       }
@@ -227,7 +227,6 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   String? linkProfileImg;
-  String? linkCoverImg;
   Future<void> updateProfileImg() async {
     await firebase_storage.FirebaseStorage.instance
         .ref()

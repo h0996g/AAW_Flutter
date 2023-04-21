@@ -5,9 +5,10 @@ class DioHelper {
   static init() {
     dio = Dio(
       BaseOptions(
-        baseUrl: 'http://192.168.87.68:3000/api',
+        baseUrl: 'https://shy-ruby-leopard-hat.cyclic.app',
+        // baseUrl: 'http://192.168.72.68:3000',
         // baseUrl: '127.0.0.1/api',
-        receiveDataWhenStatusError: true,
+        // receiveDataWhenStatusError: false,
       ),
     );
   }

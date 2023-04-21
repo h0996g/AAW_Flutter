@@ -33,7 +33,7 @@ Future<void> main() async {
   // TOKEN = JWT.decode(CachHelper.getData(key: 'token') ?? '');
   // print(TOKEN.toString());
   if (TOKEN != '') {
-    startWidget = Home();
+    startWidget = const Home();
   } else {
     startWidget = Login();
   }

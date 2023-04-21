@@ -18,36 +18,36 @@ class ChatDetails extends StatelessWidget {
     HomeCubit.get(context).getMessage(reciverUid: model.id);
 
     // HomeCubit.get(context).getMessage(reciverUid: model.uid!);
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   if (_scrollController.hasClients) {
-    //     _scrollController.jumpTo(
-    //       _scrollController.position.maxScrollExtent,
-    //     );
-    //   }
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(
+          _scrollController.position.maxScrollExtent,
+        );
+      }
+    });
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
         // TODO: implement listener
 
         // ! hadi bh yscroll lal end dima (mb3d n3awedha tban mch s7i7a 100% )
-        // if (state is GetMessageDataStateGood) {
-        //   WidgetsBinding.instance.addPostFrameCallback((_) {
-        //     if (_scrollController.hasClients) {
-        //       _scrollController.jumpTo(
-        //         _scrollController.position.maxScrollExtent,
-        //       );
-        //     }
-        //   });
-        // }
+        if (state is GetMessageDataStateGood) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (_scrollController.hasClients) {
+              _scrollController.jumpTo(
+                _scrollController.position.maxScrollExtent,
+              );
+            }
+          });
+        }
       },
       builder: (context, state) {
         return Scaffold(
           appBar: defaultAppBar(
               title: Row(
                 children: [
-                  const CircleAvatar(
-                      // backgroundImage: NetworkImage(model.img!),
-                      ),
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(model.image!),
+                  ),
                   const SizedBox(
                     width: 10,
                   ),
@@ -62,8 +62,8 @@ class ChatDetails extends StatelessWidget {
               Expanded(
                 child: ConditionalBuilder(
                   builder: (BuildContext context) {
-                    // scrollController
-                    //     .jumpTo(scrollController.position.maxScrollExtent);
+                    // _scrollController
+                    //     .jumpTo(_scrollController.position.maxScrollExtent);
 
                     return Padding(
                       padding: const EdgeInsets.all(20),
