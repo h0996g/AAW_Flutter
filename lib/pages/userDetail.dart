@@ -53,10 +53,11 @@ class _UserDetailState extends State<UserDetail> {
                         SizedBox(
                           height: size.height * 0.05,
                         ),
-                        const CircleAvatar(
+                        CircleAvatar(
                           radius: 60,
+                          backgroundColor: Colors.transparent,
                           backgroundImage: NetworkImage(
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9-6bTSqGzEDlxq6CbtlyAHvfr47PT5BpaGTi0nq4&s'),
+                              HomeCubit.get(context).otherUserModel!.image!),
                         ),
                         const SizedBox(
                           height: 20,
@@ -98,7 +99,12 @@ class _UserDetailState extends State<UserDetail> {
                   },
                   condition: state is! LodinGetUserDetailState,
                   fallback: (BuildContext context) {
-                    return const Center(child: CircularProgressIndicator());
+                    return SizedBox(
+                        height: size.height -
+                            defaultAppBar().preferredSize.height * 2,
+                        width: size.width,
+                        child:
+                            const Center(child: CircularProgressIndicator()));
                   },
                 ),
               ),

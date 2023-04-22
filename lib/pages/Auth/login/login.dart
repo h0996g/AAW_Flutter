@@ -47,6 +47,7 @@ class Login extends StatelessWidget {
                     ),
                     defaultForm(
                         controller: emailController,
+                        type: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
                         label: 'Email',
                         prefixIcon: const Icon(Icons.email),
@@ -70,7 +71,7 @@ class Login extends StatelessWidget {
                                 ? const Icon(Icons.visibility_off)
                                 : const Icon(Icons.visibility)),
                         controller: passwordController,
-                        textInputAction: TextInputAction.done,
+                        textInputAction: TextInputAction.none,
                         prefixIcon: const Icon(Icons.password),
                         obscureText: !_loginCubit.isvisibility,
                         label: "Password",
@@ -129,7 +130,7 @@ class Login extends StatelessWidget {
       },
       listener: (BuildContext context, Object? state) {
         if (state is LoginUserStateGood) {
-          showToast(msg: "Login Successful", state: ToastStates.success);
+          showToast(msg: "Logged in Successfully", state: ToastStates.success);
           // sleep(const Duration(seconds: 1));
           CachHelper.putcache(key: "token", value: state.token).then((value) {
             print(value.toString());
@@ -141,7 +142,7 @@ class Login extends StatelessWidget {
           });
           navigatAndFinish(context: context, page: const Home());
         } else if (state is LoginUserStateBad) {
-          showToast(msg: state.err, state: ToastStates.error);
+          showToast(msg: 'Something Went Wrong', state: ToastStates.error);
         }
       },
     );

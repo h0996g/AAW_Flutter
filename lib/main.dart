@@ -25,6 +25,7 @@ Future<void> main() async {
   );
   Widget startWidget;
   TOKEN = await CachHelper.getData(key: 'token') ?? '';
+  // CachHelper.removdata(key: "token");
   if (TOKEN != '') {
     DECODEDTOKEN = JwtDecoder.decode(TOKEN);
     print(DECODEDTOKEN['_id']);

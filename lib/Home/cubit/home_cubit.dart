@@ -225,11 +225,11 @@ class HomeCubit extends Cubit<HomeState> {
   File? comp;
   Future<void> imagePickerProfile(ImageSource source) async {
     final ImagePicker _pickerProfile = ImagePicker();
-    _pickerProfile.pickImage(source: source).then((value) async {
+    await _pickerProfile.pickImage(source: source).then((value) async {
       // imageProfile = value;
       await FlutterImageCompress.compressAndGetFile(
         File(value!.path).absolute.path,
-        File(value.path).path,
+        File(value.path).path + '.jpg',
         quality: 10,
       ).then((value) {
         comp = value;
@@ -271,4 +271,9 @@ class HomeCubit extends Cubit<HomeState> {
   //   });
   // }
   // !--------------------------------------------
+
+  void resetValueWheneUpdate() {
+    comp = null;
+    linkProfileImg = null;
+  }
 }

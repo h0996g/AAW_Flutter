@@ -1,6 +1,5 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_aaw/pages/users.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
@@ -159,7 +158,7 @@ class Register extends StatelessWidget {
       },
       listener: (BuildContext context, Object? state) {
         if (state is RegisterUserStateGood) {
-          showToast(msg: "Succesffuly", state: ToastStates.success);
+          showToast(msg: "Succesffuly Registered", state: ToastStates.success);
           // sleep(const Duration(seconds: 1));
           CachHelper.putcache(key: 'token', value: state.token)
               .then((value) async {
@@ -170,7 +169,7 @@ class Register extends StatelessWidget {
             navigatAndFinish(context: context, page: const Home());
           });
         } else if (state is RegisterUserStateBad) {
-          showToast(msg: state.err, state: ToastStates.error);
+          showToast(msg: 'Something Went Wrong', state: ToastStates.error);
         }
       },
     );

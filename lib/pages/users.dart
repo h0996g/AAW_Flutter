@@ -70,7 +70,7 @@ class Users extends StatelessWidget {
 
           Navigator.pop(context); //! hadi t3 showdialog
         } else if (state is DeleteUserStateBad) {
-          showToast(msg: state.err, state: ToastStates.error);
+          showToast(msg: "Something Went Wrong", state: ToastStates.error);
         }
       },
     );
@@ -134,9 +134,12 @@ Widget defaultTask(context, UserModel model, int id) => Card(
             ),
           ),
           child: CircleAvatar(
+            backgroundImage: NetworkImage(
+              model.image!,
+            ),
             backgroundColor: Colors.transparent,
             radius: 20,
-            child: Image.network(model.image!),
+            // child: Image.network(model.image!, fit: BoxFit.cover),
           ),
         ),
         title: Text(

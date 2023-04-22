@@ -46,6 +46,7 @@ class ChatDetails extends StatelessWidget {
               title: Row(
                 children: [
                   CircleAvatar(
+                    backgroundColor: Colors.transparent,
                     backgroundImage: NetworkImage(model.image!),
                   ),
                   const SizedBox(

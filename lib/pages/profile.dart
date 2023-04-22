@@ -20,10 +20,18 @@ class Profile extends StatelessWidget {
     return (BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
         // TODO: implement listener
+        if (state is DeleteUserStateGood) {
+          showToast(msg: 'Delete Successfully', state: ToastStates.success);
+          CachHelper.removdata(key: "token").then((value) {
+            HomeCubit.get(context).resetValueWhenelogout();
+            navigatAndFinish(context: context, page: Login());
+          });
+        }
       },
       builder: (context, state) {
         return Scaffold(
             body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Center(
             child: ConditionalBuilder(
               builder: (BuildContext context) {
@@ -38,6 +46,7 @@ class Profile extends StatelessWidget {
                         height: size.height * 0.05,
                       ),
                       CircleAvatar(
+                        backgroundColor: Colors.transparent,
                         backgroundImage: NetworkImage(
                             HomeCubit.get(context).userModel!.image!),
                         radius: 60,
@@ -74,7 +83,8 @@ class Profile extends StatelessWidget {
                       Spacer(),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 70, vertical: 30),
+                          horizontal: 70,
+                        ),
                         child: defaultSubmit2(
                             text: 'Logout',
                             background: Colors.grey.shade800,
@@ -87,13 +97,59 @@ class Profile extends StatelessWidget {
                               });
                             }),
                       ),
+                      TextButton(
+                        onPressed: () async {
+                          await showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    title: const Text(
+                                      "Are you Sure ?",
+                                      style: TextStyle(),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text(
+                                            "Cancel",
+                                            // style: TextStyle(color: Colors.green),
+                                          )),
+                                      TextButton(
+                                          onPressed: () {
+                                            HomeCubit.get(context).deleteUser(
+                                                id: HomeCubit.get(context)
+                                                    .userModel!
+                                                    .id!);
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text(
+                                            "Delete",
+                                            style: TextStyle(color: Colors.red),
+                                          ))
+                                    ],
+                                  ));
+                        },
+                        child: Text(
+                          "Delete Account ",
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      )
                     ],
                   ),
                 );
               },
-              condition: state is! LodinGetCurrentUserDetailState,
+              condition: state is! LodinGetCurrentUserDetailState &&
+                  state is! LodinDeleteUserState,
               fallback: (BuildContext context) {
-                return const Center(child: CircularProgressIndicator());
+                return SizedBox(
+                    height:
+                        size.height - defaultAppBar().preferredSize.height * 2,
+                    width: size.width,
+                    child: const Center(child: CircularProgressIndicator()));
               },
             ),
           ),
