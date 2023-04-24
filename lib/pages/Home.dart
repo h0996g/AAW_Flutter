@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../Home/cubit/home_cubit.dart';
-import '../shared/components/components.dart';
-import '../shared/helper/cashHelper.dart';
-import 'Auth/login/login.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -32,8 +29,8 @@ class Home extends StatelessWidget {
                 icon: Icon(Icons.people),
               ),
               BottomNavigationBarItem(
-                label: 'Setting',
-                icon: Icon(Icons.settings),
+                label: 'Profile',
+                icon: Icon(Icons.person),
               ),
             ],
             currentIndex: _homeCubit.currentIndex,

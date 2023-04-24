@@ -115,14 +115,14 @@ class _UpdateUserFormState extends State<UpdateUserForm> {
                             children: [
                               CircleAvatar(
                                 backgroundColor: Colors.transparent,
-                                backgroundImage: HomeCubit.get(context)
-                                            .comp !=
-                                        null
-                                    ? Image.file(HomeCubit.get(context).comp!)
-                                        .image
-                                    : NetworkImage(HomeCubit.get(context)
-                                        .userModel!
-                                        .image!),
+                                backgroundImage:
+                                    HomeCubit.get(context).imageCompress != null
+                                        ? Image.file(HomeCubit.get(context)
+                                                .imageCompress!)
+                                            .image
+                                        : NetworkImage(HomeCubit.get(context)
+                                            .userModel!
+                                            .image!),
                                 radius: 60,
                               ),
                               IconButton(

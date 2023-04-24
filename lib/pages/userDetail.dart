@@ -46,56 +46,122 @@ class _UserDetailState extends State<UserDetail> {
               child: Center(
                 child: ConditionalBuilder(
                   builder: (BuildContext context) {
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      // crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: size.height * 0.05,
-                        ),
-                        CircleAvatar(
-                          radius: 60,
-                          backgroundColor: Colors.transparent,
-                          backgroundImage: NetworkImage(
-                              HomeCubit.get(context).otherUserModel!.image!),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          HomeCubit.get(context).otherUserModel!.name!,
-                          style: const TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.w400),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          HomeCubit.get(context).otherUserModel!.email!,
-                          style: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w200),
-                        ),
-                        SizedBox(
-                          height: size.height * 0.1,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: defaultSubmit2(
-                              text: 'Send Message',
-                              background: Colors.grey,
-                              onPressed: () {
-                                navigatAndReturn(
-                                    context: context,
-                                    page: ChatDetails(
-                                      model:
-                                          HomeCubit.get(context).otherUserModel,
-                                    ));
-                                // navigatAndReturn(
-                                //     context: context, page: UpdateUserForm());
-                              }),
-                        )
-                      ],
+                    return Container(
+                      height: size.height -
+                          defaultAppBar().preferredSize.height * 2.5,
+                      padding: EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            radius: 80.0,
+                            backgroundImage: NetworkImage(
+                                HomeCubit.get(context).otherUserModel!.image!),
+                          ),
+                          SizedBox(height: 16.0),
+                          Text(
+                            HomeCubit.get(context).otherUserModel!.name!,
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 8.0),
+                          // Text(
+                          //   'Software Developer',
+                          //   style: TextStyle(fontSize: 16.0),
+                          // ),
+                          // SizedBox(height: 16.0),
+                          Divider(),
+                          ListTile(
+                            leading: Icon(Icons.email),
+                            title: Text('Email'),
+                            subtitle: Text(
+                                HomeCubit.get(context).otherUserModel!.email!),
+                            // onTap: () {},
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.phone),
+                            title: Text('Phone'),
+                            subtitle: Text(
+                                HomeCubit.get(context).otherUserModel!.phone!),
+                            // onTap: () {},
+                          ),
+
+                          SizedBox(
+                            height: size.height * 0.1,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: defaultSubmit2(
+                                text: 'Send Message',
+                                background: Colors.grey,
+                                onPressed: () {
+                                  navigatAndReturn(
+                                      context: context,
+                                      page: ChatDetails(
+                                        model: HomeCubit.get(context)
+                                            .otherUserModel,
+                                      ));
+                                  // navigatAndReturn(
+                                  //     context: context, page: UpdateUserForm());
+                                }),
+                          )
+                        ],
+                      ),
                     );
+
+                    //  Column(
+                    //   mainAxisSize: MainAxisSize.min,
+                    //   // crossAxisAlignment: CrossAxisAlignment.center,
+                    //   children: [
+                    //     SizedBox(
+                    //       height: size.height * 0.05,
+                    //     ),
+                    //     CircleAvatar(
+                    //       radius: 60,
+                    //       backgroundColor: Colors.transparent,
+                    //       backgroundImage: NetworkImage(
+                    //           HomeCubit.get(context).otherUserModel!.image!),
+                    //     ),
+                    //     const SizedBox(
+                    //       height: 20,
+                    //     ),
+                    //     Text(
+                    //       HomeCubit.get(context).otherUserModel!.name!,
+                    //       style: const TextStyle(
+                    //           fontSize: 30, fontWeight: FontWeight.w400),
+                    //     ),
+                    //     const SizedBox(
+                    //       height: 5,
+                    //     ),
+                    //     Text(
+                    //       HomeCubit.get(context).otherUserModel!.email!,
+                    //       style: const TextStyle(
+                    //           fontSize: 20, fontWeight: FontWeight.w200),
+                    //     ),
+                    //     SizedBox(
+                    //       height: size.height * 0.1,
+                    //     ),
+                    //     Padding(
+                    //       padding: EdgeInsets.symmetric(horizontal: 20),
+                    //       child: defaultSubmit2(
+                    //           text: 'Send Message',
+                    //           background: Colors.grey,
+                    //           onPressed: () {
+                    //             navigatAndReturn(
+                    //                 context: context,
+                    //                 page: ChatDetails(
+                    //                   model:
+                    //                       HomeCubit.get(context).otherUserModel,
+                    //                 ));
+                    //             // navigatAndReturn(
+                    //             //     context: context, page: UpdateUserForm());
+                    //           }),
+                    //     )
+                    //   ],
+                    // );
                   },
                   condition: state is! LodinGetUserDetailState,
                   fallback: (BuildContext context) {

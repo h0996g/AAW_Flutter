@@ -26,12 +26,12 @@ class HomeCubit extends Cubit<HomeState> {
   List<Widget> userScreen = [
     const Chats(),
     Users(),
-    const Profile(),
+    Profile(),
   ];
   List<String> appbarScreen = const [
     'Chats',
     'People',
-    'Setting',
+    'Profile',
   ];
 
   void resetValueWhenelogout() {
@@ -137,7 +137,7 @@ class HomeCubit extends Cubit<HomeState> {
       {required String id, required String name, required String email}) async {
     emit(LodinUpdateUserState());
 
-    if (comp != null) {
+    if (imageCompress != null) {
       await updateProfileImg();
     }
     UserModel _model = UserModel(
@@ -222,7 +222,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   // !--------imagepicker with Compress
   // XFile? imageProfile;
-  File? comp;
+  File? imageCompress;
   Future<void> imagePickerProfile(ImageSource source) async {
     final ImagePicker _pickerProfile = ImagePicker();
     await _pickerProfile.pickImage(source: source).then((value) async {
@@ -232,7 +232,7 @@ class HomeCubit extends Cubit<HomeState> {
         File(value.path).path + '.jpg',
         quality: 10,
       ).then((value) {
-        comp = value;
+        imageCompress = value;
         emit(ImagePickerProfileStateGood());
       });
       // imageProfile = value;
@@ -247,8 +247,8 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> updateProfileImg() async {
     await firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('users/${Uri.file(comp!.path).pathSegments.last}')
-        .putFile(comp!)
+        .child('users/${Uri.file(imageCompress!.path).pathSegments.last}')
+        .putFile(imageCompress!)
         .then((p0) async {
       await p0.ref.getDownloadURL().then((value) {
         linkProfileImg = value;
@@ -273,7 +273,7 @@ class HomeCubit extends Cubit<HomeState> {
   // !--------------------------------------------
 
   void resetValueWheneUpdate() {
-    comp = null;
+    imageCompress = null;
     linkProfileImg = null;
   }
 }
